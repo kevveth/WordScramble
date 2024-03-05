@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var usedWords: [String] = []
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var wordCount = 0
     
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -20,12 +21,18 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
+                // Display number of words
+                Section("Word Count") {
+                    Text("\(wordCount)")
+                }
+                
                 // Enter a new word
                 Section {
                     TextField("Enter a new word", text: $newWord)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                 }
+                
                 // Display used words
                 Section {
                     ForEach(usedWords, id: \.self) { word in
@@ -96,6 +103,7 @@ struct ContentView: View {
         withAnimation {
             usedWords.insert(answer, at: 0)
         }
+        wordCount += 1
         newWord = ""
     }
     
@@ -148,6 +156,10 @@ struct ContentView: View {
     
     func isShort(word: String) -> Bool {
         word.count < 3
+    }
+    
+    func isLong(word: String) -> Bool {
+        word.count < 9
     }
     
     func wordError(title: String, message: String) {
