@@ -37,6 +37,17 @@ struct ContentView: View {
                 }
             }
             .navigationTitle(rootWord)
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        usedWords = []
+                        newWord = ""
+                        startGame()
+                    } label: {
+                        Image(systemName: "play.circle")
+                    }
+                }
+            }
         }
         .onSubmit(addNewWord)
         .onAppear(perform: startGame)
