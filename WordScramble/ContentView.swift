@@ -41,7 +41,7 @@ struct ContentView: View {
         .onSubmit(addNewWord)
         .onAppear(perform: startGame)
         .alert(errorTitle, isPresented: $showingError) {
-//            Button("OK") { }
+            //            Button("OK") { }
         } message: {
             Text(errorMessage)
         }
@@ -68,6 +68,16 @@ struct ContentView: View {
         
         guard isReal(word: answer) else {
             wordError(title: "Word not recognized", message: "You can't just make them up, you know!")
+            return
+        }
+        
+        guard !isShort(word: answer) else {
+            wordError(title: "Word is too short", message: "Add some more letters")
+            return
+        }
+        
+        guard answer != rootWord else {
+            wordError(title: "Start word repeated", message: "You can't use the word we started with!")
             return
         }
         
@@ -123,6 +133,10 @@ struct ContentView: View {
         
         // If the word was OK the location for that range will be the special value NSNotFound
         return misspelledRange.location == NSNotFound
+    }
+    
+    func isShort(word: String) -> Bool {
+        word.count < 3
     }
     
     func wordError(title: String, message: String) {
